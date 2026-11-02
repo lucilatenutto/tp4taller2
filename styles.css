@@ -1756,6 +1756,12 @@ body {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 0 1cqh rgba(255, 255, 255, 0.4));
+  animation: sonar 1.6s ease-in-out infinite;
+}
+
+.pantalla.visible .onda-audio-img {
+  opacity: 0;
+  animation: aparecer 1s ease forwards, sonar 1.6s ease-in-out 1s infinite;
 }
 
 .subtitulos-llamada-wrap {
