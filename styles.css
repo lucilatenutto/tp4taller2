@@ -781,6 +781,15 @@ body {
   gap: 1cqw;
 }
 
+.llamada-accion {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.llamada-accion:hover {
+  transform: scale(1.04);
+}
+
 .badge-numero-txt {
   display: inline-flex;
   align-items: center;
@@ -2001,13 +2010,14 @@ body {
 .exp-feedback-titulo {
   position: absolute;
   left: 50%;
-  top: 7%;
+  top: 15%;
   transform: translateX(-50%);
   font-family: 'Michroma', sans-serif;
-  font-size: 4.5cqh;
+  font-weight: normal;
+  font-size: 5cqh;
   color: #ebdcb8;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0.3cqh 1cqh rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.16em;
+  text-shadow: 0 0.4cqh 1.2cqh rgba(0, 0, 0, 0.9);
   z-index: 3;
   white-space: nowrap;
 }
@@ -2015,14 +2025,15 @@ body {
 .panel-feedback-wrap {
   position: absolute;
   left: 50%;
-  top: 32%;
+  top: 36%;
   transform: translateX(-50%);
-  width: 65%;
-  background: rgba(162, 153, 118, 0.95);
-  border: 0.25cqh solid #f2b33d;
-  border-radius: 2.5cqh;
-  box-shadow: 0 1.5cqh 4cqh rgba(0, 0, 0, 0.8);
-  padding: 2.5cqh 3cqw;
+  width: 63%;
+  min-height: 28%;
+  background: rgba(133, 98, 56, 0.78);
+  border: none;
+  border-radius: 4.5cqh;
+  box-shadow: 0 1.2cqh 3cqh rgba(0, 0, 0, 0.55);
+  padding: 3.5cqh 4cqw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2031,22 +2042,105 @@ body {
 
 .feedback-parrafo {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 3cqh;
+  font-size: 3.3cqh;
   font-weight: 500;
-  line-height: 1.38;
-  color: #2b1f17;
+  line-height: 1.42;
+  letter-spacing: 0.12em;
+  color: #ebdcb8;
   text-align: center;
+  text-shadow: 0 0.2cqh 0.6cqh rgba(0, 0, 0, 0.5);
   margin: 0;
 }
 
 .tipito-feedback {
   position: absolute;
-  left: 4%;
-  bottom: 6%;
-  width: 15cqw;
-  max-width: 190px;
   height: auto;
   filter: drop-shadow(0 1.2cqh 2cqh rgba(0, 0, 0, 0.7));
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
+}
+
+.tipito-feedback-mal {
+  left: 3.2%;
+  bottom: 6%;
+  width: 18.5cqw;
+}
+
+.tipito-feedback-bien {
+  left: 6.5%;
+  bottom: 10%;
+  width: 14.5cqw;
+}
+
+.btn-avanzar-feedback {
+  right: 6.5cqw;
+  bottom: 8cqh;
+}
+
+.ovalo-asterisco {
+  width: 7.5cqw;
+  height: 5cqw;
+  max-width: 95px;
+  max-height: 62px;
+  border-radius: 999px;
+  background-color: #1f170e;
+  border: 0.3cqh solid #d8c69e;
+  color: #ffffff;
+}
+
+/* =========================================================
+   ESTILOS PARA LAS PANTALLAS DE CONCLUSIÓN FINAL
+   ========================================================= */
+
+.canvas-conclusion {
+  position: relative;
+  width: min(100vw, 177.78vh);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: #0d0806;
+}
+
+.fondo-conclusion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.btn-hit-avanzar-conclusion {
+  position: absolute;
+  left: 4cqw;
+  bottom: 2cqh;
+  width: 15cqw;
+  height: 16cqh;
+  background: rgba(255, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  outline: none;
+  border-radius: 2cqh;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.btn-hit-avanzar-conclusion:hover {
+  background: rgba(242, 179, 61, 0.14);
+  box-shadow: 0 0 2cqh rgba(242, 179, 61, 0.35);
+  transform: scale(1.04);
+}
+
+.canvas-conclusion-2 {
+  cursor: pointer;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }

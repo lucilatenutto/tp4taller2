@@ -165,10 +165,10 @@
         <div class="panel-llamada-entrante">
           <h3 class="llamada-titulo">LLAMADA ENTRANTE</h3>
           <div class="llamada-linea-punteada"></div>
-          <p class="llamada-texto">
+          <p id="btn-atender-llamada-1" class="llamada-texto llamada-accion" role="button" tabindex="0">
             Marca <span class="badge-numero-txt">0</span> para atender la llamada
           </p>
-          <p class="llamada-texto">
+          <p id="btn-ignorar-llamada-1" class="llamada-texto llamada-accion" role="button" tabindex="0">
             Marca <span class="badge-numero-txt">9</span> para ignorar la llamada
           </p>
           <div class="llamada-linea-punteada"></div>
@@ -378,10 +378,10 @@
         <div class="panel-llamada-entrante">
           <h3 class="llamada-titulo">LLAMADA ENTRANTE</h3>
           <div class="llamada-linea-punteada"></div>
-          <p class="llamada-texto">
+          <p id="btn-atender-llamada-2" class="llamada-texto llamada-accion" role="button" tabindex="0">
             Marca <span class="badge-numero-txt">0</span> para atender la llamada
           </p>
-          <p class="llamada-texto">
+          <p id="btn-ignorar-llamada-2" class="llamada-texto llamada-accion" role="button" tabindex="0">
             Marca <span class="badge-numero-txt">9</span> para ignorar la llamada
           </p>
           <div class="llamada-linea-punteada"></div>
@@ -632,7 +632,7 @@
   <audio id="audio-exp-4" src="llamada2.mp3" preload="auto"></audio>
 
   <!-- OTROS AUDIOS Y LLAMADAS -->
-  <audio id="audio-llamada1" src="llamada1.mpeg" preload="auto"></audio>
+  <audio id="audio-llamada1" src="llamada1.mp3" preload="auto"></audio>
   <section id="modal-llamada-activa-4" class="pantalla" aria-hidden="true">
     <div class="canvas canvas-modal-llamada-activa">
       <img src="telefonosolo2.png" alt="Teléfono en llamada" class="fondo-llamada-activa">
@@ -682,73 +682,60 @@
     </div>
   </section>
 
-  <!-- PANTALLAS DE FEEDBACK PARA LA EXPERIENCIA FINAL -->
-  <section id="experiencia-error-real" class="pantalla" aria-hidden="true">
+  <!-- PANTALLAS DE FEEDBACK PARA LA EXPERIENCIA FINAL (MAYORÍA MAL / MAYORÍA BIEN) -->
+  <section id="experiencia-mayoria-mal" class="pantalla" aria-hidden="true">
     <div class="canvas canvas-experiencia-final">
       <img src="telefonosolo2.png" alt="Fondo teléfono" class="fondo-experiencia-final">
       <h2 class="exp-feedback-titulo">Te equivocaste!!!</h2>
       <div class="panel-feedback-wrap">
         <p class="feedback-parrafo">
-          Esta llamada era real, no fue generada con inteligencia artificial.
+          Esta llamada fue<br>
+          generada con inteligencia<br>
+          artificial, no era real.
         </p>
       </div>
-      <img src="tipito7.png" alt="Personaje triste" class="tipito-feedback">
-      <button id="btn-avanzar-error-real" class="btn-avanzar-portada" aria-label="Avanzar">
-        <span class="circulo-asterisco">*</span>
+      <img src="tipito6.png" alt="Personaje pensativo sentado" class="tipito-feedback tipito-feedback-mal">
+      <button id="btn-avanzar-mayoria-mal" class="btn-avanzar-portada btn-avanzar-feedback" aria-label="Avanzar">
+        <span class="circulo-asterisco ovalo-asterisco">*</span>
         <span class="texto-avanzar">Avanzar</span>
       </button>
     </div>
   </section>
 
-  <section id="experiencia-acierto-real" class="pantalla" aria-hidden="true">
+  <section id="experiencia-mayoria-bien" class="pantalla" aria-hidden="true">
     <div class="canvas canvas-experiencia-final">
       <img src="telefonosolo2.png" alt="Fondo teléfono" class="fondo-experiencia-final">
       <h2 class="exp-feedback-titulo">¡Muy bien!</h2>
       <div class="panel-feedback-wrap">
         <p class="feedback-parrafo">
-          Esta llamada sí es real. Aun así, recordá que no siempre es fácil distinguir una voz auténtica de una clonada.
+          Esta llamada si es real.<br>
+          Aun así, recordá que no siempre<br>
+          es fácil distinguir una voz<br>
+          auténtica de una clonada.
         </p>
       </div>
-      <img src="tipito7.png" alt="Personaje contento" class="tipito-feedback">
-      <button id="btn-avanzar-acierto-real" class="btn-avanzar-portada" aria-label="Avanzar">
-        <span class="circulo-asterisco">*</span>
+      <img src="tipito.png" alt="Personaje detective" class="tipito-feedback tipito-feedback-bien">
+      <button id="btn-avanzar-mayoria-bien" class="btn-avanzar-portada btn-avanzar-feedback" aria-label="Avanzar">
+        <span class="circulo-asterisco ovalo-asterisco">*</span>
         <span class="texto-avanzar">Avanzar</span>
       </button>
     </div>
   </section>
 
-  <section id="experiencia-acierto-ia" class="pantalla" aria-hidden="true">
-    <div class="canvas canvas-experiencia-final">
-      <img src="telefonosolo2.png" alt="Fondo teléfono" class="fondo-experiencia-final">
-      <h2 class="exp-feedback-titulo">¡Muy bien!</h2>
-      <div class="panel-feedback-wrap">
-        <p class="feedback-parrafo">
-          La IA no pudo engañarte. Identificaste correctamente que la llamada estaba generada con inteligencia
-          artificial.
-        </p>
-      </div>
-      <img src="tipito7.png" alt="Personaje contento" class="tipito-feedback">
-      <button id="btn-avanzar-acierto-ia" class="btn-avanzar-portada" aria-label="Avanzar">
-        <span class="circulo-asterisco">*</span>
-        <span class="texto-avanzar">Avanzar</span>
+  <!-- PANTALLA CONCLUSIÓN 1: ¿QUIÉN ESTÁ DEL OTRO LADO? -->
+  <section id="experiencia-conclusion-1" class="pantalla" aria-hidden="true">
+    <div class="canvas canvas-conclusion">
+      <img src="conclusion1.jpg" alt="¿Quién está del otro lado?" class="fondo-conclusion">
+      <button id="btn-avanzar-conclusion-1" class="btn-hit-avanzar-conclusion" aria-label="Avanzar a pantalla final">
+        <span class="sr-only">Avanzar</span>
       </button>
     </div>
   </section>
 
-  <section id="experiencia-error-ia" class="pantalla" aria-hidden="true">
-    <div class="canvas canvas-experiencia-final">
-      <img src="telefonosolo2.png" alt="Fondo teléfono" class="fondo-experiencia-final">
-      <h2 class="exp-feedback-titulo">Te equivocaste!!!</h2>
-      <div class="panel-feedback-wrap">
-        <p class="feedback-parrafo">
-          Esta llamada fue generada con inteligencia artificial, no era real.
-        </p>
-      </div>
-      <img src="tipito7.png" alt="Personaje triste" class="tipito-feedback">
-      <button id="btn-avanzar-error-ia" class="btn-avanzar-portada" aria-label="Avanzar">
-        <span class="circulo-asterisco">*</span>
-        <span class="texto-avanzar">Avanzar</span>
-      </button>
+  <!-- PANTALLA CONCLUSIÓN 2: FINALIZA ESTA LLAMADA COLGANDO EL TELÉFONO -->
+  <section id="experiencia-conclusion-2" class="pantalla" aria-hidden="true" title="Hacé clic para colgar y volver al menú">
+    <div class="canvas canvas-conclusion canvas-conclusion-2">
+      <img src="conclusion2.jpg" alt="Finaliza esta llamada colgando el teléfono" class="fondo-conclusion">
     </div>
   </section>
 

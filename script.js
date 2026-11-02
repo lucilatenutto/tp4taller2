@@ -61,8 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Elementos interactivos para las llamadas entrantes
   const badgeCeroOp4 = document.querySelector('#modal-detalle-libreta .estado-2');
   const badgeCeroInfoDelito = document.querySelector('#modal-infodedelito .estado-2');
+  const btnAtenderLlamada1 = document.getElementById('btn-atender-llamada-1');
+  const btnIgnorarLlamada1 = document.getElementById('btn-ignorar-llamada-1');
 
-  const audioLlamada1 = document.getElementById('audio-llamada1') || new Audio('llamada1.mpeg');
+  const audioLlamada1 = document.getElementById('audio-llamada1') || new Audio('llamada1.mp3');
   const audioLlamada2 = document.getElementById('audio-llamada2') || new Audio('llamada2.mpeg');
   
   audioLlamada1.preload = 'auto';
@@ -191,31 +193,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- EXPERIENCIA FINAL (Secuencia de 4 Audios) ---
+  // --- EXPERIENCIA FINAL (Secuencia de Audios y Resultado por Mayoría) ---
   const experienciaAudio = document.getElementById('experiencia-audio');
   const audioNumTitulo = document.getElementById('audio-num-titulo');
   const btnExpReal = document.getElementById('btn-exp-real');
   const btnExpIa = document.getElementById('btn-exp-ia');
   const btnCerrarAudioExp = document.getElementById('btn-cerrar-audio-exp');
 
-  const experienciaErrorReal = document.getElementById('experiencia-error-real');
-  const experienciaAciertoReal = document.getElementById('experiencia-acierto-real');
-  const experienciaAciertoIa = document.getElementById('experiencia-acierto-ia');
-  const experienciaErrorIa = document.getElementById('experiencia-error-ia');
+  const experienciaMayoriaMal = document.getElementById('experiencia-mayoria-mal');
+  const experienciaMayoriaBien = document.getElementById('experiencia-mayoria-bien');
+  const btnAvanzarMayoriaMal = document.getElementById('btn-avanzar-mayoria-mal');
+  const btnAvanzarMayoriaBien = document.getElementById('btn-avanzar-mayoria-bien');
 
-  const btnAvanzarErrorReal = document.getElementById('btn-avanzar-error-real');
-  const btnAvanzarAciertoReal = document.getElementById('btn-avanzar-acierto-real');
-  const btnAvanzarAciertoIa = document.getElementById('btn-avanzar-acierto-ia');
-  const btnAvanzarErrorIa = document.getElementById('btn-avanzar-error-ia');
+  const experienciaConclusion1 = document.getElementById('experiencia-conclusion-1');
+  const experienciaConclusion2 = document.getElementById('experiencia-conclusion-2');
+  const btnAvanzarConclusion1 = document.getElementById('btn-avanzar-conclusion-1');
 
   const audiosExperiencia = [
-    { id: 1, elemento: document.getElementById('audio-exp-1') || new Audio('llamada1.mpeg'), tipo: 'real' },
-    { id: 2, elemento: document.getElementById('audio-exp-2') || new Audio('llamada2.mpeg'), tipo: 'real' },
-    { id: 3, elemento: document.getElementById('audio-exp-3') || new Audio('llamada3.mpeg'), tipo: 'ia' },
-    { id: 4, elemento: document.getElementById('audio-exp-4') || new Audio('llamada4.mpeg'), tipo: 'ia' }
+    { id: 1, elemento: document.getElementById('audio-exp-1') || new Audio('audio1real.mp3'), tipo: 'real' },
+    { id: 2, elemento: document.getElementById('audio-exp-2') || new Audio('audio2ia.mp3'), tipo: 'ia' },
+    { id: 3, elemento: document.getElementById('audio-exp-3') || new Audio('audio3ia.mp3'), tipo: 'ia' },
+    { id: 4, elemento: document.getElementById('audio-exp-4') || new Audio('llamada2.mp3'), tipo: 'real' }
   ];
 
   let audioActualIndex = 0;
+  let aciertosExperiencia = 0;
+  let erroresExperiencia = 0;
 
   function detenerAudiosExperiencia() {
     audiosExperiencia.forEach(item => {
@@ -231,6 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const config = audiosExperiencia[audioActualIndex];
     if (audioNumTitulo) {
       audioNumTitulo.textContent = `Audio número ${config.id}`;
+    }
+    const ondaImg = experienciaAudio ? experienciaAudio.querySelector('.onda-audio-img') : null;
+    if (ondaImg) {
+      ondaImg.style.animation = 'none';
+      void ondaImg.offsetWidth;
+      ondaImg.style.animation = '';
     }
     if (config.elemento) {
       config.elemento.currentTime = 0;
@@ -249,6 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnAvanzarExp && experienciaFinal && experienciaAudio) {
     btnAvanzarExp.addEventListener('click', () => {
       audioActualIndex = 0;
+      aciertosExperiencia = 0;
+      erroresExperiencia = 0;
       pantalla = 'experiencia-audio';
       ocultar(experienciaFinal);
       mostrar(experienciaAudio);
@@ -273,77 +284,81 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function registrarRespuestaExperiencia(eleccion) {
+    detenerAudiosExperiencia();
+    const actual = audiosExperiencia[audioActualIndex];
+    if (actual && actual.tipo === eleccion) {
+      aciertosExperiencia++;
+    } else {
+      erroresExperiencia++;
+    }
+
+    audioActualIndex++;
+    if (audioActualIndex < audiosExperiencia.length) {
+      reproducirAudioActual();
+    } else {
+      ocultar(experienciaAudio);
+      if (aciertosExperiencia > erroresExperiencia) {
+        pantalla = 'experiencia-mayoria-bien';
+        mostrar(experienciaMayoriaBien);
+      } else {
+        pantalla = 'experiencia-mayoria-mal';
+        mostrar(experienciaMayoriaMal);
+      }
+    }
+  }
+
   if (btnExpReal) {
     btnExpReal.addEventListener('click', () => {
-      detenerAudiosExperiencia();
-      const actual = audiosExperiencia[audioActualIndex];
-      ocultar(experienciaAudio);
-
-      if (actual.tipo === 'real') {
-        pantalla = 'experiencia-acierto-real';
-        mostrar(experienciaAciertoReal);
-      } else {
-        pantalla = 'experiencia-error-ia';
-        mostrar(experienciaErrorIa);
-      }
+      registrarRespuestaExperiencia('real');
     });
   }
 
   if (btnExpIa) {
     btnExpIa.addEventListener('click', () => {
-      detenerAudiosExperiencia();
-      const actual = audiosExperiencia[audioActualIndex];
-      ocultar(experienciaAudio);
-
-      if (actual.tipo === 'ia') {
-        pantalla = 'experiencia-acierto-ia';
-        mostrar(experienciaAciertoIa);
-      } else {
-        pantalla = 'experiencia-error-real';
-        mostrar(experienciaErrorReal);
-      }
+      registrarRespuestaExperiencia('ia');
     });
   }
 
-  function avanzarSiguienteAudio() {
-    audioActualIndex++;
-    if (audioActualIndex < audiosExperiencia.length) {
-      pantalla = 'experiencia-audio';
-      mostrar(experienciaAudio);
-      reproducirAudioActual();
-    } else {
-      audioActualIndex = 0;
-      pantalla = 'menu';
-      mostrar(menu);
-    }
+  function irAConclusion1() {
+    ocultar(experienciaMayoriaMal);
+    ocultar(experienciaMayoriaBien);
+    pantalla = 'experiencia-conclusion-1';
+    mostrar(experienciaConclusion1);
   }
 
-  if (btnAvanzarErrorReal) {
-    btnAvanzarErrorReal.addEventListener('click', () => {
-      ocultar(experienciaErrorReal);
-      avanzarSiguienteAudio();
-    });
+  function irAConclusion2() {
+    ocultar(experienciaConclusion1);
+    pantalla = 'experiencia-conclusion-2';
+    mostrar(experienciaConclusion2);
   }
 
-  if (btnAvanzarAciertoReal) {
-    btnAvanzarAciertoReal.addEventListener('click', () => {
-      ocultar(experienciaAciertoReal);
-      avanzarSiguienteAudio();
-    });
+  function finalizarExperienciaAlMenu() {
+    audioActualIndex = 0;
+    aciertosExperiencia = 0;
+    erroresExperiencia = 0;
+    ocultar(experienciaMayoriaMal);
+    ocultar(experienciaMayoriaBien);
+    ocultar(experienciaConclusion1);
+    ocultar(experienciaConclusion2);
+    pantalla = 'menu';
+    mostrar(menu);
   }
 
-  if (btnAvanzarAciertoIa) {
-    btnAvanzarAciertoIa.addEventListener('click', () => {
-      ocultar(experienciaAciertoIa);
-      avanzarSiguienteAudio();
-    });
+  if (btnAvanzarMayoriaMal) {
+    btnAvanzarMayoriaMal.addEventListener('click', irAConclusion1);
   }
 
-  if (btnAvanzarErrorIa) {
-    btnAvanzarErrorIa.addEventListener('click', () => {
-      ocultar(experienciaErrorIa);
-      avanzarSiguienteAudio();
-    });
+  if (btnAvanzarMayoriaBien) {
+    btnAvanzarMayoriaBien.addEventListener('click', irAConclusion1);
+  }
+
+  if (btnAvanzarConclusion1) {
+    btnAvanzarConclusion1.addEventListener('click', irAConclusion2);
+  }
+
+  if (experienciaConclusion2) {
+    experienciaConclusion2.addEventListener('click', finalizarExperienciaAlMenu);
   }
 
   if (btnVolverMenu) {
@@ -398,6 +413,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function ignorarLlamada1() {
+    if (timerLlamada) clearTimeout(timerLlamada);
+    modalDetalleLibreta.classList.remove('cambiado');
+    ocultar(modalDetalleLibreta);
+    mostrar(nucleo1);
+    pantalla = 'nucleo-1';
+  }
+
+  if (btnAtenderLlamada1) {
+    btnAtenderLlamada1.addEventListener('click', (e) => {
+      e.stopPropagation();
+      activarLlamada1();
+    });
+  }
+
+  if (btnIgnorarLlamada1) {
+    btnIgnorarLlamada1.addEventListener('click', (e) => {
+      e.stopPropagation();
+      ignorarLlamada1();
+    });
+  }
+
   if (badgeCeroOp4) {
     badgeCeroOp4.addEventListener('click', () => {
       if (modalDetalleLibreta.classList.contains('cambiado')) {
@@ -407,9 +444,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.addEventListener('keydown', (e) => {
-    if (modalDetalleLibreta && modalDetalleLibreta.classList.contains('visible') && modalDetalleLibreta.classList.contains('cambiado')) {
+    if (modalDetalleLibreta && modalDetalleLibreta.classList.contains('visible')) {
       if (e.key === '0') {
         activarLlamada1();
+      } else if (e.key === '9' && modalDetalleLibreta.classList.contains('cambiado')) {
+        ignorarLlamada1();
+      }
+    }
+
+    if (pantalla === 'experiencia-mayoria-mal' || pantalla === 'experiencia-mayoria-bien') {
+      if (e.key === '*' || e.key === 'Enter') {
+        irAConclusion1();
+      }
+    } else if (pantalla === 'experiencia-conclusion-1') {
+      if (e.key === '*' || e.key === 'Enter') {
+        irAConclusion2();
+      }
+    } else if (pantalla === 'experiencia-conclusion-2') {
+      if (e.key === '#' || e.key === 'Escape' || e.key === 'Enter') {
+        finalizarExperienciaAlMenu();
       }
     }
   });
